@@ -41,6 +41,10 @@ cargo run --bin client
 
 RPC (Remote Procedure Call) é um protocolo que permite que um programa execute uma sub-rotina ou procedimento em outro endereço de espaço (normalmente em outro computador na rede) como se fosse uma chamada local. Isso facilita a comunicação entre diferentes sistemas e a distribuição de tarefas.
 
+## Biblioteca tarpc
+
+A biblioteca `tarpc` é uma biblioteca de Rust que facilita a criação de sistemas distribuídos utilizando RPC. Ela permite definir serviços como traits e automaticamente gera o código necessário para a comunicação entre cliente e servidor. Isso simplifica o desenvolvimento de aplicações distribuídas, abstraindo muitos dos detalhes de implementação de RPC. Para mais informações, visite o [repositório no GitHub](https://github.com/google/tarpc).
+
 ## Calculadora
 
 A calculadora distribuída implementa as seguintes operações:
