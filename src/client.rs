@@ -8,7 +8,7 @@ use tokio::time::sleep;
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
 
-    let server_addr: SocketAddr = "3.225.60.216".parse()?;
+    let server_addr: SocketAddr = "3.225.60.216:15000".parse()?;
 
     let mut transport = tarpc::serde_transport::tcp::connect(server_addr, Json::default);
     transport.config_mut().max_frame_length(usize::MAX);
