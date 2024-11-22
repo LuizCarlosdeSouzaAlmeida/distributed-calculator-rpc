@@ -1,22 +1,16 @@
-use clap::Parser;
 use service::CalculatorClient;
 use std::{io, net::SocketAddr, time::Duration};
 use tarpc::{client, context, tokio_serde::formats::Json};
 use tokio::time::sleep;
 
-#[derive(Parser)]
-struct Flags {
-    #[clap(long)]
-    server_addr: SocketAddr,
-    #[clap(long)]
-    name: String,
-}
+
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let flags = Flags::parse();
 
-    let mut transport = tarpc::serde_transport::tcp::connect(flags.server_addr, Json::default);
+    let server_addr: SocketAddr = "3.225.60.216".parse()?;
+
+    let mut transport = tarpc::serde_transport::tcp::connect(server_addr, Json::default);
     transport.config_mut().max_frame_length(usize::MAX);
 
     let client = CalculatorClient::new(client::Config::default(), transport.await?).spawn();
@@ -45,7 +39,10 @@ async fn main() -> anyhow::Result<()> {
             "add" => client.add(context::current(), operand1, operand2).await,
             "subtract" => client.sub(context::current(), operand1, operand2).await,
             "multiply" => client.mult(context::current(), operand1, operand2).await,
-            "divide" => client.div(context::current(), operand1, operand2).await.map(|res| res.unwrap()),
+            "divide" => client.div(context::current(), operand1, operand2).await.map(|res| res.unwrap_or_else(|e| {
+                println!("Error: {}", e);
+                0
+            })),
             _ => {
                 println!("Invalid operation");
                 continue;
