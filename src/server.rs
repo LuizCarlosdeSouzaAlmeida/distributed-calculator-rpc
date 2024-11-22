@@ -1,7 +1,7 @@
 use futures::{future, prelude::*};
 use service::Calculator;
 use std::
-    net::{IpAddr, Ipv6Addr}
+    net::{IpAddr, Ipv4Addr}
 ;
 use tarpc::{
     context,
@@ -49,7 +49,7 @@ async fn spawn(fut: impl Future<Output = ()> + Send + 'static) {
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     let port = 15000;
-    let server_addr = (IpAddr::V6(Ipv6Addr::LOCALHOST), port);
+    let server_addr = (IpAddr::V4(Ipv4Addr::LOCALHOST), port);
 
     let mut listener = tarpc::serde_transport::tcp::listen(&server_addr, Json::default).await?;
     listener.config_mut().max_frame_length(usize::MAX);
